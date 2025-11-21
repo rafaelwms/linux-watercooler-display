@@ -1,0 +1,13 @@
+[Unit]
+Description=CPU Cooler
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+ExecStart=%h/cpu-cooler/.venv/bin/python %h/cpu-cooler/cpu_cooler.py
+
+[Install]
+WantedBy=default.target
+Alias=cpu-cooler.service

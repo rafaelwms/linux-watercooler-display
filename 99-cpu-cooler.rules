@@ -1,0 +1,5 @@
+# Regra de udev para liberar acesso ao dispositivo HID do cooler CPU
+# Salve este arquivo como /etc/udev/rules.d/99-cpu-cooler.rules
+# Após criar, rode: sudo udevadm control --reload-rules && sudo udevadm trigger
+
+SUBSYSTEM=="usb", ATTR{idVendor}=="aa88", ATTR{idProduct}=="8666", MODE="0666", GROUP="plugdev"
