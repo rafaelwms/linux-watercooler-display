@@ -18,7 +18,7 @@ An automated script to control USB CPU temperature displays on Linux systems.
 To install on a new machine, simply run:
 
 ```bash
-git clone https://github.com/martiniano/cpu-cooler
+git clone https://github.com/rafaelwms/linux-watercooler-display
 cd cpu-cooler
 ./install.sh
 ```
@@ -37,7 +37,7 @@ If you prefer to install manually:
 
 #### 1. Clone and configure environment:
 ```bash
-git clone https://github.com/martiniano/cpu-cooler
+git clone https://github.com/rafaelwms/linux-watercooler-display
 cd cpu-cooler
 python3 -m venv .venv
 source .venv/bin/activate
@@ -134,7 +134,7 @@ The script monitors CPU temperature every second and sends the value to the USB 
 Para instalar em uma máquina nova, simplesmente execute:
 
 ```bash
-git clone https://github.com/martiniano/cpu-cooler
+git clone https://github.com/rafaelwms/linux-watercooler-display
 cd cpu-cooler
 ./install.sh
 ```
@@ -153,7 +153,7 @@ Se preferir instalar manualmente:
 
 #### 1. Clone e configure o ambiente:
 ```bash
-git clone https://github.com/martiniano/cpu-cooler
+git clone https://github.com/rafaelwms/linux-watercooler-display
 cd cpu-cooler
 python3 -m venv .venv
 source .venv/bin/activate
