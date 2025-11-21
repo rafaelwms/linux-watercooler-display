@@ -35,7 +35,17 @@ if [[ ! -f "$SCRIPT_DIR/cpu-cooler.service" ]]; then
     exit 1
 fi
 
+if [[ ! -f "$SCRIPT_DIR/uninstall.sh" ]]; then
+    echo "❌ uninstall.sh not found in $SCRIPT_DIR"
+    exit 1
+fi
+
 echo "✅ All required files found"
+echo
+
+echo "🔧 Setting permissions for uninstall script..."
+chmod +x "$SCRIPT_DIR/uninstall.sh"
+echo "✅ Uninstall script is now executable"
 echo
 
 # Check for USB device
