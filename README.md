@@ -18,7 +18,7 @@ An automated script to control USB CPU temperature displays on Linux systems.
 To install on a new machine, simply run:
 
 ```bash
-git clone https://github.com/rafaelwms/linux-watercooler-display
+git clone https://github.com/martiniano/cpu-cooler
 cd cpu-cooler
 ./install.sh
 ```
@@ -37,7 +37,7 @@ If you prefer to install manually:
 
 #### 1. Clone and configure environment:
 ```bash
-git clone https://github.com/rafaelwms/linux-watercooler-display
+git clone https://github.com/martiniano/cpu-cooler
 cd cpu-cooler
 python3 -m venv .venv
 source .venv/bin/activate
@@ -105,7 +105,8 @@ cpu-cooler/
 ├── cpu-cooler.service      # systemd service file
 ├── 99-cpu-cooler.rules     # udev rules for USB permissions
 ├── install.sh              # Automatic installation script
-└── README.md              # This file
+├── uninstall.sh            # Automatic uninstallation script
+└── README.md               # This file
 ```
 
 ### 🎯 Compatibility
@@ -117,6 +118,21 @@ cpu-cooler/
 ### ⚡ How it works
 
 The script monitors CPU temperature every second and sends the value to the USB display. The display smooths temperature transitions for a more pleasant visualization.
+
+### 🗑️ Uninstallation
+
+To completely remove the CPU cooler service and all configurations:
+
+```bash
+./uninstall.sh
+```
+
+The uninstall script will:
+- Stop and disable the systemd service
+- Remove udev rules
+- Optionally remove the Python virtual environment
+- Optionally remove the entire project directory
+- Terminate any running processes
 
 ---
 
@@ -134,7 +150,7 @@ The script monitors CPU temperature every second and sends the value to the USB 
 Para instalar em uma máquina nova, simplesmente execute:
 
 ```bash
-git clone https://github.com/rafaelwms/linux-watercooler-display
+git clone https://github.com/martiniano/cpu-cooler
 cd cpu-cooler
 ./install.sh
 ```
@@ -153,7 +169,7 @@ Se preferir instalar manualmente:
 
 #### 1. Clone e configure o ambiente:
 ```bash
-git clone https://github.com/rafaelwms/linux-watercooler-display
+git clone https://github.com/martiniano/cpu-cooler
 cd cpu-cooler
 python3 -m venv .venv
 source .venv/bin/activate
@@ -221,7 +237,8 @@ cpu-cooler/
 ├── cpu-cooler.service      # Arquivo de serviço systemd
 ├── 99-cpu-cooler.rules     # Regras udev para permissões USB
 ├── install.sh              # Script de instalação automática
-└── README.md              # Este arquivo
+├── uninstall.sh            # Script de desinstalação automática
+└── README.md               # Este arquivo
 ```
 
 ### 🎯 Compatibilidade
@@ -234,6 +251,21 @@ cpu-cooler/
 
 O script monitora a temperatura da CPU a cada segundo e envia o valor para o display USB. O display suaviza a transição de temperatura para uma visualização mais agradável.
 
+### 🗑️ Desinstalação
+
+Para remover completamente o serviço do CPU cooler e todas as configurações:
+
+```bash
+./uninstall.sh
+```
+
+O script de desinstalação irá:
+- Parar e desabilitar o serviço systemd
+- Remover regras udev
+- Opcionalmente remover o ambiente virtual Python
+- Opcionalmente remover todo o diretório do projeto
+- Finalizar quaisquer processos em execução
+
 ---
 
 ## 📜 Documentação Original
@@ -244,6 +276,4 @@ Since the manufacture supply a software only for Windows.
 
 Tested with Water Cooler Husky Glacier
 
-![](images/cpu-cooler.jpeg)
-
-![](images/water-cooler-husky-glacier-argb.webp)
+Tested with Water Cooler Rise Mode Water Cooler Aura Ice ARGB
