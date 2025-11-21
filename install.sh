@@ -52,9 +52,58 @@ else
 fi
 echo
 
+# Check and install python3-venv if needed
+echo "🔍 Checking Python virtual environment support..."
+if ! python3 -c "import ensurepip" &>/dev/null; then
+    echo "📦 Installing python3-venv package (requires sudo)..."
+    # Detect the package manager and install accordingly
+    if command -v apt &>/dev/null; then
+        sudo apt update && sudo apt install -y python3-venv
+    elif command -v yum &>/dev/null; then
+        sudo yum install -y python3-venv
+    elif command -v dnf &>/dev/null; then
+        sudo dnf install -y python3-venv
+    elif command -v pacman &>/dev/null; then
+        sudo pacman -S --noconfirm python-virtualenv
+    else
+        echo "❌ Could not detect package manager. Please install python3-venv manually:"
+        echo "   Debian/Ubuntu: sudo apt install python3-venv"
+        echo "   RHEL/CentOS:   sudo yum install python3-venv"
+        echo "   Fedora:        sudo dnf install python3-venv"
+        echo "   Arch:          sudo pacman -S python-virtualenv"
+        exit 1
+    fi
+    echo "✅ python3-venv installed"
+else
+    echo "✅ Python virtual environment support available"
+fi
+echo
+
+# Create Python virtual environment
+echo "🐍 Setting up Python virtual environment..."
+if [[ ! -d "$SCRIPT_DIR/.venv" ]]; then
+    python3 -m venv "$SCRIPT_DIR/.venv"
+    echo "✅ Virtual environment created"
+elif [[ ! -f "$SCRIPT_DIR/.venv/bin/pip" ]]; then
+    echo "🔧 Recreating corrupted virtual environment..."
+    rm -rf "$SCRIPT_DIR/.venv"
+    python3 -m venv "$SCRIPT_DIR/.venv"
+    echo "✅ Virtual environment recreated"
+else
+    echo "✅ Virtual environment already exists"
+fi
+
+# Activate virtual environment and install packages
+echo "📦 Installing Python packages..."
+"$SCRIPT_DIR/.venv/bin/pip" install --upgrade pip
+"$SCRIPT_DIR/.venv/bin/pip" install psutil pyusb
+
+echo "✅ Python packages installed"
+echo
+
 # Detect CPU type and temperature sensor
 echo "🌡️  Detecting CPU temperature sensors..."
-python3 -c "
+"$SCRIPT_DIR/.venv/bin/python" -c "
 import psutil
 import sys
 
@@ -95,23 +144,6 @@ rm -f /tmp/cpu_sensor_name
 echo "🎯 Selected sensor: $CPU_SENSOR"
 echo
 
-# Create Python virtual environment
-echo "🐍 Setting up Python virtual environment..."
-if [[ ! -d "$SCRIPT_DIR/.venv" ]]; then
-    python3 -m venv "$SCRIPT_DIR/.venv"
-    echo "✅ Virtual environment created"
-else
-    echo "✅ Virtual environment already exists"
-fi
-
-# Activate virtual environment and install packages
-echo "📦 Installing Python packages..."
-"$SCRIPT_DIR/.venv/bin/pip" install --upgrade pip
-"$SCRIPT_DIR/.venv/bin/pip" install psutil pyusb
-
-echo "✅ Python packages installed"
-echo
-
 # Update cpu_cooler.py with the correct sensor
 echo "🔧 Updating cpu_cooler.py with detected sensor..."
 sed -i "s/temps\['[^']*'\]/temps['$CPU_SENSOR']/g" "$SCRIPT_DIR/cpu_cooler.py"
@@ -123,7 +155,7 @@ echo "🔧 Updating service file paths..."
 SERVICE_FILE="$SCRIPT_DIR/cpu-cooler.service"
 TEMP_SERVICE="/tmp/cpu-cooler.service"
 
-sed "s|/home/rafaelwms/util/water-cooler|$SCRIPT_DIR|g" "$SERVICE_FILE" > "$TEMP_SERVICE"
+sed "s|%h/cpu-cooler|$SCRIPT_DIR|g" "$SERVICE_FILE" > "$TEMP_SERVICE"
 echo "✅ Service file updated with current paths"
 echo
 
